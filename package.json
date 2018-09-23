@@ -7,6 +7,9 @@
     "dont_starve",
     "dont_starve,together"
   ],
+  "scripts":{
+    "start": "node api/app.js"
+  },
   "author": "eumsmo",
   "license": "ISC"
 }
