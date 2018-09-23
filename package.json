@@ -1,0 +1,12 @@
+{
+  "name": "dontstarve-api",
+  "version": "1.0.0",
+  "description": "an api",
+  "main": "api/app.js",
+  "keywords": [
+    "dont_starve",
+    "dont_starve,together"
+  ],
+  "author": "eumsmo",
+  "license": "ISC"
+}
