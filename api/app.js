@@ -5,7 +5,7 @@ let recipes = require('./loadRecipes');
 
 
 const JSONBeauty = '\t';
-const port = 8000;
+const port = process.env.PORT|| 8000;
 const mainFile = "about.html";
 
 function endJSON(obj,res){

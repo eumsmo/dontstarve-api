@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "an api",
   "main": "api/app.js",
+  "engines": {
+    "node": "8.9.1"
+  },
   "keywords": [
     "dont_starve",
     "dont_starve,together"
