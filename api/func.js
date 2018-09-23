@@ -1,10 +1,15 @@
 const fs = require('fs');
 const JSONBeauty = '\t';
 
-let images = [];
+let images = [], head = {
+  "Access-Control-Allow-Origin": '*',
+  "Access-Control-Allow-Credentials": true,
+  'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'
+};
 
 function endJSON(obj,res){
-	res.writeHeader(200,{'Content-Type':'application/json'});
+  head['Content-Type'] = 'application/json';
+	res.writeHeader(200,head);
 	res.end(JSON.stringify(obj,null,JSONBeauty));
 }
 function endNotFound(res){
@@ -20,12 +25,15 @@ function pipeFile(file,res){
 	let src = fs.createReadStream(file);
 	src.pipe(res);
 }
+
 function pipeImg(file,res){
-  res.writeHeader(200,{'Content-Type':'image/png'});
+  head['Content-Type'] = 'image/png';
+  res.writeHeader(200,head);
   pipeFile(file,res);
 }
 function pipeHTML(file,res){
-  res.writeHeader(200,{'Content-Type':'text/html'});
+  head['Content-Type'] = 'text/html';
+  res.writeHeader(200,head);
   pipeFile(file,res);
 }
 function readDir(pasta,ext,callback){
