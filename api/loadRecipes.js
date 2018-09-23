@@ -1,4 +1,4 @@
-const recipesFile = "recipes.lua";
+const recipesFile = "api/recipes.lua";
 const fs = require('fs');
 
 let items = {},
@@ -43,7 +43,6 @@ function resourceItem(name,item){
 
 //Ler o arquivo "recipes.lua", que foi extraido das pastas do jogo
 fs.readFile(recipesFile,function(err,buffer){
-  console.log(err,buffer);
 	let recipes = buffer.toString();
 	recipes = recipes.split('\n');
 
