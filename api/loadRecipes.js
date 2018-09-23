@@ -13,11 +13,11 @@ function redirect(line){
 }
 function transformItem(line){
   let item = {
-    recipe: {}
+    resources: {}
   }, item_name;
 
   line = line.replace(/Ingredient\("(\w*)", (\w*)\)/g,(str,name,quant)=>{
-    item.recipe[name]=quant;
+    item.resources[name]=quant;
   });
 
   line = line.replace(/Recipe\("(\w*)"/,(str,name)=>{
@@ -35,7 +35,7 @@ function transformItem(line){
   items[item_name] = item;
 }
 function resourceItem(name,item){
-  for(let resource in item.recipe){
+  for(let resource in item.resources){
     if(resources[resource]) resources[resource].push(name);
     else resources[resource] = [name];
   }
@@ -56,6 +56,7 @@ fs.readFile(recipesFile,function(err,buffer){
 
   for (let resource in resources)
     resourcelist.push(resource);
+
 });
 
 module.exports = {

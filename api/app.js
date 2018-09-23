@@ -1,57 +1,94 @@
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
-let recipes = require('./loadRecipes');
+const recipes = require('./loadRecipes');
+const func = require('./func');
 
 
-const JSONBeauty = '\t';
-const port = process.env.PORT|| 8000;
+const port = process.env.PORT|| 5000;
 const mainFile = "api/about.html";
+const spritesFile = "sprite.png";
 
-function endJSON(obj,res){
-	res.writeHeader(200,{'Content-Type':'application/json'});
-	res.end(JSON.stringify(obj,null,JSONBeauty));
+function recipesGet(what,name,res){
+	if(recipes[what][name])
+		func.endJSON(recipes[what][name],res);
+	else
+		func.endNotFound(res);
 }
-function endNotFound(res){
-	res.writeHeader(404);
-	res.end();
+function getItemProp(name,prop,res){
+	if(!recipes.items[name]){
+		func.endNotFound(res);
+		return;
+	}
+	let item = recipes.items[name];
+
+	if(item[prop]) func.endJSON(item[prop],res);
+	else func.endNotFound(res);
 }
-function getItem(name,res){
-	if(recipes.items[name]){
-		let obj = recipes.items[name];
-		obj.name = name;
-		endJSON(obj,res);
-	} else {
-		endNotFound(res);
+function getImg(name,res){
+	name = name.endsWith('.png')? name: name+'.png';
+	if(func.images.includes(name))
+		func.pipeImg('./img/'+name,res);
+	else func.endNotFound(res);
+}
+function getList(name,res){
+	switch (name){
+		case 'item':
+		case 'resource':
+			func.endJSON(recipes[name+'list'],res);
+			break;
+		case 'image':
+			func.endJSON(func.images,res);
+			break;
+		default:
+			func.endNotFound(res);
+			break;
 	}
 }
-function arrayPath(path){
-	let arr = path.split('/');
-	arr.shift();
-	return arr;
-}
-
 
 const server = http.createServer(function(req,res){
 	let urlObj = url.parse(req.url,true),
 		pathname = urlObj.pathname,
-		path = arrayPath(pathname);
+		path = func.arrayPath(pathname);
 		console.log(pathname);
 
-	if(path[0]=="item"){
-		if(path[1] && path[1]!="") getItem(path[1],res);
-		else endJSON(recipes.items,res);
-	}
-	else if(path[0]=='itemlist'){
-		endJSON(recipes.itemlist,res);
-	}
-	else if(path[0]=='resourcelist'){
-		endJSON(recipes.resourcelist,res);
-	} else if(path[0]==""){
-		let src = fs.createReadStream(mainFile);
-		src.pipe(res);
-	} else {
-		endNotFound(res);
+	switch (path[0]){
+		// IMAGE
+		case "image":
+			if(path[1] && path[1]!="") {
+				getImg(path[1],res);
+				break;
+			}
+			else func.pipeImg(spritesFile,res);
+			break;
+		case "image.png":
+			if(path[1] && path[1]!="") func.endNotFound(res);
+			else func.pipeImg(spritesFile,res);
+			break;
+		// ITEM
+		case "item":
+			if(path[1] && path[1]!=""){
+				if(path[2] && path[2]!="") getItemProp(path[1],path[2],res);
+				else recipesGet('items',path[1],res);
+			}
+			else func.endJSON(recipes.items,res);
+			break;
+		// RESOURCE
+		case "resource":
+			if(path[1] && path[1]!="") recipesGet('resources',path[1],res);
+			else func.endJSON(recipes.resources,res);
+			break;
+		// LIST
+		case "list":
+			getList(path[1],res);
+			break;
+		// ABOUT
+		case "":
+			func.pipeHTML(mainFile,res);
+			break;
+		// ERROR 404 - Not Found
+		default:
+			func.endNotFound(res);
 	}
 });
 server.listen(port);

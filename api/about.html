@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title>About the API</title>
+    <style media="screen">
+      ul{
+        margin-bottom: 1em;
+      }
+    </style>
   </head>
   <body>
     <p>Esse é uma API em desenvolvimento, criada por eumsmo sem intuito profissional.
@@ -14,10 +19,27 @@
     </p>
 
     <ul>
-      <li>/item : devolve um vetor com todos os itens e suas respectivas informações</li>
-      <li>/item/_NOME_DO_ITEM_ : devolve um objeto com as informações de um item especifico</li>
-      <li>/itemlist : devolve um vetor com o nome de todos os items craftaveis</li>
-      <li>/resourcelist : devolve um vetor com o nome de todos os recursos utilizaveis para craftar</li>
+      <li>/item : devolve um objeto com todos os itens e suas respectivas informações</li>
+      <ul>
+        <li>/item/(nome) : devolve um objeto com as informações de um item especifico</li>
+        <li>/item/(nome)/(propriedade) : devolve um JSON com uma propriedade de um item especifico</li>
+      </ul>
+      <li>/resource : devolve um objeto com todos os recursos utilizaveis para craftar e todos os itens que tal recurso pode craftar</li>
+      <ul>
+        <li>/resource/(nome) : devolve um vetor com todos os itens que tal recurso pode craftar</li>
+      </ul>
+
+      <li>/image[.png] : devolve uma spritesheet(.png) com todos os itens</li>
+      <ul>
+        <li>/image/(nome)[.png] : devolve a imagem(.png) relativa ao item</li>
+      </ul>
+
+      <li>/list : </li>
+      <ul>
+        <li>/list/resource : devolve um vetor com o nome de todos os recursos utilizaveis para craftar</li>
+        <li>/list/item : devolve um vetor com o nome de todos os items craftaveis</li>
+        <li>/list/image : devolve um vetor com o nome de todas as imagens da API</li>
+      </ul>
     </ul>
     <p> <strong>Mais em breve!</strong> Por exemplo o CSS dessa pagina! <strong>Obs:</strong> Por enquanto só tem item do Dont Starve Together </p>
   </body>
