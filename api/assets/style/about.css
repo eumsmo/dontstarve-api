@@ -1,0 +1,50 @@
+::selection{
+  color: white;
+  background-color: #BC6B6B;
+}
+
+html, body{
+  height: 100%;
+}
+
+body{
+  margin: 0;
+  background: url(../imgs/bgImg.png) left bottom/cover no-repeat;
+  overflow: hidden;
+  font-family: 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+a{
+  color: #BC6B6B;
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: underline;
+}
+
+h1{
+  font-size: calc(25px + .5vw);
+}
+
+main{
+  background-color: white;
+  padding: 1em;
+  width: 60vw;
+  height: 90vh;
+  overflow-y: auto;
+  box-shadow: -7px 2px 28px -1px rgba(0,0,0,0.75);
+}
+
+p, li{
+  font-size: calc(12px + .4vw);
+}
+
+@media screen and (max-width: 460px){
+  main{
+    width: 80vw;
+  }
+}
