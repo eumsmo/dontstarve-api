@@ -7,6 +7,10 @@ let images = [], head = {
   'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS'
 };
 
+function fileExist(file,call,res){
+  if(fs.existsSync(file)) call();
+  else endNotFound(res);
+}
 function endJSON(obj,res){
   head['Content-Type'] = 'application/json';
 	res.writeHeader(200,head);
@@ -22,8 +26,10 @@ function arrayPath(path){
 	return arr;
 }
 function pipeFile(file,res){
-	let src = fs.createReadStream(file);
-	src.pipe(res);
+  fileExist(file,()=>{
+    let src = fs.createReadStream(file);
+  	src.pipe(res);
+  }, res);
 }
 
 function pipeImg(file,res){
@@ -62,6 +68,7 @@ module.exports = {
   endJSON,
   endNotFound,
   arrayPath,
+  pipeFile,
   pipeHTML,
   pipeImg
 };

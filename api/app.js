@@ -86,6 +86,13 @@ const server = http.createServer(function(req,res){
 		case "":
 			func.pipeHTML(mainFile,res);
 			break;
+		case "assets":
+			if(path[1] && path[1]!="" && path[2] && path[2]!=""){
+				res.writeHeader(200);
+				func.pipeFile(`api/assets/${path[1]}/${path[2]}`,res);
+			}
+			else func.endNotFound(res);
+			break;
 		// ERROR 404 - Not Found
 		default:
 			func.endNotFound(res);
